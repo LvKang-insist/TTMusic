@@ -1,0 +1,59 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+//给构建工具引入 plugin
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        //配置 maven 私服
+        maven {
+            url 'http://localhost:8081/repository/tt_release/'
+            credentials {
+                username 'admin'
+                password 'admin123'
+            }
+        }
+        maven {
+            url 'http://localhost:8081/repository/tt_snapshots/'
+            credentials {
+                username 'admin'
+                password 'admin123'
+            }
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+//这里才是真正工程的引入
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        //
+        mavenCentral()
+        maven {
+            url 'http://localhost:8081/repository/tt_release/'
+            credentials {
+                username 'admin'
+                password 'admin123'
+            }
+        }
+        maven {
+            url 'http://localhost:8081/repository/tt_snapshots/'
+            credentials {
+                username 'admin'
+                password 'admin123'
+            }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
