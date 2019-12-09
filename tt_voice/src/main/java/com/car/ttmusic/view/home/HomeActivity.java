@@ -5,15 +5,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.RelativeLayout;
 
+import com.car.lib_commin_ui.base.BaseActivity;
 import com.car.ttmusic.R;
 import com.car.ttmusic.model.CHANNEL;
+import com.car.ttmusic.view.home.adapter.HomePageAdapter;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -30,18 +29,19 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
  * @time 2019/12/5 21:27
  * @description 首页
  */
-public class HomeActivity extends FragmentActivity implements View.OnClickListener {
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private static final CHANNEL[] CHANNELS =
             new CHANNEL[]{CHANNEL.MY, CHANNEL.DISCORY, CHANNEL.FRIEND};
 
-    /*
+    /**
      * View
      */
     private DrawerLayout mDrawerLayout;
     private View mToggleView;
     private View mSearchView;
     private ViewPager mViewPager;
+    private HomePageAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +57,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         mSearchView = findViewById(R.id.search_view);
 
         mViewPager = findViewById(R.id.view_pager);
+        mAdapter = new HomePageAdapter(getSupportFragmentManager(), CHANNELS);
+        mViewPager.setAdapter(mAdapter);
         initMagicIndicator();
     }
 

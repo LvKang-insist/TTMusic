@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    api 大于 21-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!--        关掉这个，就可以修改系统的颜色-->
+        <item name="android:windowTranslucentStatus">false</item>
+        <!--        状态栏颜色 透明-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--        导航颜色-->
+        <item name="android:navigationBarColor">@android:color/white</item>
+
+        <item name="android:fitsSystemWindows">true</item>
+        <!--        开启转场动画-->
+        <item name="android:windowActivityTransitions">true</item>
+        <!-- Customize your theme here. -->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+    </style>
+</resources>
