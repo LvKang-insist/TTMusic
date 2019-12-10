@@ -21,6 +21,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation this.rootProject.depsLibs.appcompat
-    implementation this.rootProject.depsLibs.okhttp
+    api this.rootProject.depsLibs.okhttp
+    implementation this.rootProject.depsLibs.gson
 
 }
