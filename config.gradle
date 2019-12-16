@@ -11,22 +11,32 @@ ext {
 
     depsVersion = [
             appcompat     : '28.0.0',
-            magicindicator : '1.5.0',
-            okhttp         : '3.11.0',
-            gson           : '2.8.0',
-            glide          : '4.9.0',
-            rxjava         : '2.2.9',
-            rxandroid      : '2.1.1',
+            magicindicator: '1.5.0',
+            okhttp        : '3.11.0',
+            gson          : '2.8.0',
+            glide         : '4.9.0',
+            rxjava        : '2.2.9',
+            rxandroid     : '2.1.1',
+            eventbus      : '3.1.1',
+            greendao      : '3.2.2',
+            design        : '28.0.0',
+            recyclerview  : '28.0.0',
+
     ]
 
     //第三方库
     depsLibs = [
             appcompat     : "com.android.support:appcompat-v7:${depsVersion.appcompat}",
-            magicindicator : "com.github.hackware1993:MagicIndicator:${depsVersion.magicindicator}",
-            okhttp         : "com.squareup.okhttp3:okhttp:${depsVersion.okhttp}",
-            gson           : "com.google.code.gson:gson:${depsVersion.gson}",
-            glide          : "com.github.bumptech.glide:glide:${depsVersion.glide}",
-            rxjava         : "io.reactivex.rxjava2:rxjava:${depsVersion.rxjava}",
-            rxandroid      : "io.reactivex.rxjava2:rxandroid:${depsVersion.rxandroid}",
+            magicindicator: "com.github.hackware1993:MagicIndicator:${depsVersion.magicindicator}",
+            okhttp        : "com.squareup.okhttp3:okhttp:${depsVersion.okhttp}",
+            gson          : "com.google.code.gson:gson:${depsVersion.gson}",
+            glide         : "com.github.bumptech.glide:glide:${depsVersion.glide}",
+            rxjava        : "io.reactivex.rxjava2:rxjava:${depsVersion.rxjava}",
+            rxandroid     : "io.reactivex.rxjava2:rxandroid:${depsVersion.rxandroid}",
+            eventbus      : "org.greenrobot:eventbus:${depsVersion.eventbus}",
+            greendao      : "org.greenrobot:greendao:${depsVersion.greendao}",
+            design        : "com.android.support:design:${depsVersion.design}",
+            recyclerview  : "com.android.support:recyclerview-v7:${depsVersion.recyclerview}",
+
     ]
 }

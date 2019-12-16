@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
-
+apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.alibaba.arouter'
 //当前工程名称
 def pomName = this.getName()
 //版本
@@ -27,9 +28,27 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation this.rootProject.depsLibs.appcompat
+    implementation rootProject.depsLibs.appcompat
+    implementation rootProject.depsLibs.design
+
+
+    implementation rootProject.depsLibs.eventbus
+    implementation rootProject.depsLibs.rxjava
+    implementation rootProject.depsLibs.greendao
+
+    implementation project(path: ':lib_share')
+    implementation project(path: ':lib_commin_ui')
+    implementation project(path: ':lib_image_loader')
+
 
 }
+
+greendao {
+    //其它配置保持默认,有需要再研究
+    schemaVersion 1 //数据库版本号
+    daoPackage 'com.car.lib_audio.mediaplayer.db' //dao,master类所在包
+}
+
 //通过这个脚本可以直接将这个 library 上传到 maven
 uploadArchives {
     repositories {

@@ -2,6 +2,7 @@ package com.car.lib_network.response;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.car.lib_network.R;
 import com.car.lib_network.listener.DisposeDataHandle;
@@ -79,6 +80,7 @@ public class CommonJsonCallback implements Callback {
         if (mClass == null) {
             mListener.onSuccess(result);
         } else {
+            Log.e("--------", "handleResponse: " + result);
             Object obj = new Gson().fromJson(result, mClass);
             if (obj != null) {
                 mListener.onSuccess(obj);

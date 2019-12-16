@@ -16,13 +16,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation this.rootProject.depsLibs.appcompat
     implementation this.rootProject.depsLibs.magicindicator
+    implementation this.rootProject.depsLibs.rxjava
+    implementation this.rootProject.depsLibs.rxandroid
+    implementation this.rootProject.depsLibs.eventbus
+
     implementation project(path: ':lib_commin_ui')
-    compile project(path: ':lib_network')
+    implementation project(path: ':lib_network')
+    implementation project(path: ':lib_image_loader')
 
 }

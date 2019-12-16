@@ -7,12 +7,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.car.lib_commin_ui.base.BaseActivity;
+import com.car.lib_image_loader.app.ImageLoaderManager;
 import com.car.ttmusic.R;
+import com.car.ttmusic.login.LoginEvent;
 import com.car.ttmusic.model.CHANNEL;
+import com.car.ttmusic.utils.UserManager;
 import com.car.ttmusic.view.home.adapter.HomePageAdapter;
+import com.car.ttmusic.view.login.LoginActivity;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -21,6 +28,10 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author 345 QQ:1831712732
@@ -42,11 +53,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private View mSearchView;
     private ViewPager mViewPager;
     private HomePageAdapter mAdapter;
+    private LinearLayout unLogginLayout;
+    private ImageView mPhotoView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        EventBus.getDefault().register(this);
         initView();
     }
 
@@ -60,6 +74,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mAdapter = new HomePageAdapter(getSupportFragmentManager(), CHANNELS);
         mViewPager.setAdapter(mAdapter);
         initMagicIndicator();
+
+        //登录 ui
+        unLogginLayout = findViewById(R.id.unloggin_layout);
+        unLogginLayout.setOnClickListener(this);
+        mPhotoView = findViewById(R.id.avatr_view);
     }
 
     /**
@@ -102,8 +121,30 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         ViewPagerHelper.bind(magicIndicator, mViewPager);
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     public void onClick(View v) {
-
+        if (v.getId() == R.id.unloggin_layout) {
+            if (UserManager.getInstance().hasLogin()) {
+                LoginActivity.start(this);
+            } else {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLgoinEvent(LoginEvent event) {
+        unLogginLayout.setVisibility(View.GONE);
+        mPhotoView.setVisibility(View.VISIBLE);
+        ImageLoaderManager.getInstance().displayImageForCircle(mPhotoView,
+                UserManager.getInstance().getUser().data.photoUrl);
+    }
+
 }

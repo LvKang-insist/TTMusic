@@ -86,7 +86,7 @@ public class CommonRequest {
     public static Request createGetRequest(String url, RequestParams params, RequestParams headers) {
         StringBuilder urlBuilder = new StringBuilder(url).append("?");
         if (params != null) {
-            for (Map.Entry<String, String> entry : headers.urlParams.entrySet()) {
+            for (Map.Entry<String, String> entry : params.urlParams.entrySet()) {
                 //参数遍历
                 urlBuilder.append(entry.getKey()).append("=").append(entry.getValue());
             }
