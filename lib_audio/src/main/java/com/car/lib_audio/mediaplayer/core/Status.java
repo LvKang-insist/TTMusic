@@ -5,7 +5,7 @@ package com.car.lib_audio.mediaplayer.core;
  * @name TTMusic
  * @class name：com.car.lib_audio.mediaplayer.core
  * @time 2019/12/16 23:26
- * @description
+ * @description MediaPlay Status
  */
 public enum Status {
     /**
