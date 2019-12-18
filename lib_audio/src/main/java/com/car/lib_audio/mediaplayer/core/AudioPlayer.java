@@ -136,7 +136,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
     }
 
     /**
-     * 情况播放器占用的资源
+     * 清空播放器占用的资源
      */
     public void release() {
         if (mMediaPlayer == null) {
@@ -161,7 +161,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
      *
      * @return
      */
-    private Status getStatus() {
+    public Status getStatus() {
         if (mMediaPlayer != null) {
             return mMediaPlayer.getStatus();
         }
