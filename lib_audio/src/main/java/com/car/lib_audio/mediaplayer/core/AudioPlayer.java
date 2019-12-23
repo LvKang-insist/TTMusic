@@ -73,7 +73,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
 
     private void init() {
         mMediaPlayer = new CustomMediaPlayer();
-        mMediaPlayer.setWakeMode(null, PowerManager.PARTIAL_WAKE_LOCK);
+        mMediaPlayer.setWakeMode(AudioHelper.getContext(), PowerManager.PARTIAL_WAKE_LOCK);
         //设置此MediaPlayer的音频流类型
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mMediaPlayer.setOnCompletionListener(this);
@@ -88,7 +88,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
     }
 
     /**
-     * 对外太高的加载方法
+     * 对外提供的加载方法
      *
      * @param audioBean
      */
@@ -203,6 +203,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
     private void start() {
         if (!mAudioFocusManager.requestAudioFocus()) {
             Toast.makeText(AudioHelper.getContext(), "获取焦点失败", Toast.LENGTH_SHORT).show();
+            return;
         }
         mMediaPlayer.start();
         mWifiLock.acquire();

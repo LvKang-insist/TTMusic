@@ -38,4 +38,15 @@ public class AudioBean {
      * 时长
      */
     public String totalTime;
+
+    public AudioBean(String id, String mUrl, String name, String author, String album, String albumInfo, String albumPic, String totalTime) {
+        this.id = id;
+        this.mUrl = mUrl;
+        this.name = name;
+        this.author = author;
+        this.album = album;
+        this.albumInfo = albumInfo;
+        this.albumPic = albumPic;
+        this.totalTime = totalTime;
+    }
 }

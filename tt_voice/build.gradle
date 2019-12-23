@@ -33,5 +33,6 @@ dependencies {
     implementation project(path: ':lib_commin_ui')
     implementation project(path: ':lib_network')
     implementation project(path: ':lib_image_loader')
+    implementation project(path: ':lib_audio')
 
 }
