@@ -134,13 +134,11 @@ public class BottomMusicView extends LinearLayout {
     }
 
     private void showPlayView() {
-        Toast.makeText(mContext, "播放", Toast.LENGTH_SHORT).show();
         mPlayView.setImageResource(R.mipmap.note_btn_pause_white);
 
     }
 
     private void showPauseView() {
-        Toast.makeText(mContext, "暂停", Toast.LENGTH_SHORT).show();
         mPlayView.setImageResource(R.mipmap.note_btn_play_white);
 
     }
