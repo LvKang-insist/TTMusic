@@ -212,7 +212,7 @@ public class AudioController {
     /**
      * 播放上一首
      */
-    public void pervious() {
+    public void previous() {
         mAudioPlayer.load(getPreviousPlaying());
     }
 
@@ -229,11 +229,11 @@ public class AudioController {
     }
 
     /**
-     * 获取当前的
+     * 获取当前的 音樂
      *
      * @return
      */
-    private AudioBean getNowPlaying() {
+    public AudioBean getNowPlaying() {
         return mQueue.get(mQueueIndex);
     }
 

@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.car.lib_audio.app.AudioHelper;
 import com.car.lib_audio.mediaplayer.event.AudioLoadEvent;
@@ -23,6 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
+import static com.car.lib_audio.mediaplayer.view.NotificationHelper.NOTIFICATION_ID;
 
 
 /**
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 public class MusicService extends Service implements NotificationHelper.NotificationHelperListener {
 
     private static String DATA_AUDIOS = "AUDIOS";
-    //actions
+
     private static String ACTION_START = "ACTION_START";
 
     private ArrayList<AudioBean> mAudioBeans;
@@ -66,12 +68,13 @@ public class MusicService extends Service implements NotificationHelper.Notifica
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Toast.makeText(AudioHelper.getContext(), "启动服务", Toast.LENGTH_SHORT).show();
         mAudioBeans = (ArrayList<AudioBean>) intent.getSerializableExtra(DATA_AUDIOS);
         if (ACTION_START.equals(intent.getAction())) {
             //开始播放
             playMusic();
             //初始化前台Notification
-//            NotificationHelper.getInstance().init(this);
+            NotificationHelper.getInstance().init(this);
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -81,17 +84,23 @@ public class MusicService extends Service implements NotificationHelper.Notifica
         AudioController.getInstance().play();
     }
 
+    /**
+     * 注册广播
+     */
     private void registerBroadcastReceiver() {
         if (mReceiver == null) {
             mReceiver = new NotificationReceiver();
             IntentFilter filter = new IntentFilter();
+            //我们的广播接收器先监听什么样的广播，就在这个添加相应的action
             filter.addAction(NotificationReceiver.ACTION_STATUS_BAR);
+            //注册动态广播
             registerReceiver(mReceiver, filter);
         }
     }
 
     private void unRegisterBroadcastReceiver() {
         if (mReceiver != null) {
+            //取消注册
             unregisterReceiver(mReceiver);
         }
     }
@@ -99,7 +108,7 @@ public class MusicService extends Service implements NotificationHelper.Notifica
     @Override
     public void onNotificationInit() {
         //service与Notification绑定
-//        startForeground(NOTIFICATION_ID, NotificationHelper.getInstance().getNotification());
+        startForeground(NOTIFICATION_ID, NotificationHelper.getInstance().getNotification());
     }
 
     @Override
@@ -111,20 +120,20 @@ public class MusicService extends Service implements NotificationHelper.Notifica
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAudioLoadEvent(AudioLoadEvent event) {
-        //更新notifacation为load状态
-//        NotificationHelper.getInstance().showLoadStatus(event.mAudioBean);
+        //更新notification为load状态
+        NotificationHelper.getInstance().showLoadStatus(event.mAudioBean);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAudioPauseEvent(AudioPauseEvent event) {
-        //更新notifacation为暂停状态
-//        NotificationHelper.getInstance().showPauseStatus();
+        //更新notification为暂停状态
+        NotificationHelper.getInstance().showPauseStatus();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAudioStartEvent(AudioStartEvent event) {
-        //更新notifacation为播放状态
-//        NotificationHelper.getInstance().showPlayStatus();
+        //更新notification为播放状态
+        NotificationHelper.getInstance().showPlayStatus();
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
@@ -162,7 +171,7 @@ public class MusicService extends Service implements NotificationHelper.Notifica
                     AudioController.getInstance().playOrPause();
                     break;
                 case EXTRA_PRE:
-//                    AudioController.getInstance().previous(); //不管当前状态，直接播放
+                    AudioController.getInstance().previous(); //不管当前状态，直接播放
                     break;
                 case EXTRA_NEXT:
                     AudioController.getInstance().next();

@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -11,6 +12,7 @@ import android.widget.RemoteViews;
 
 import com.car.lib_audio.R;
 import com.car.lib_audio.app.AudioHelper;
+import com.car.lib_audio.mediaplayer.core.AudioController;
 import com.car.lib_audio.mediaplayer.core.MusicService;
 import com.car.lib_audio.mediaplayer.model.AudioBean;
 import com.car.lib_image_loader.app.ImageLoaderManager;
@@ -30,6 +32,9 @@ public class NotificationHelper {
      * 与音乐service的回调通信
      */
     public interface NotificationHelperListener {
+        /**
+         * 綁定服務
+         */
         void onNotificationInit();
     }
 
@@ -61,6 +66,27 @@ public class NotificationHelper {
         return NotificationHelperHolder.M_INSTANCE;
     }
 
+    public void init(NotificationHelperListener listener) {
+        mNotificationManager = (NotificationManager) AudioHelper.getContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        packageName = AudioHelper.getContext().getPackageName();
+        mAudioBean = AudioController.getInstance().getNowPlaying();
+        initNotification();
+        mListener = listener;
+        if (mListener != null) {
+            mListener.onNotificationInit();
+        }
+    }
+
+    /**
+     * 获取通知
+     *
+     * @return
+     */
+    public Notification getNotification() {
+        return mNotification;
+    }
+
     /**
      * 初始化 notification
      */
@@ -72,12 +98,16 @@ public class NotificationHelper {
                 NotificationChannel channel =
                         new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
                 channel.enableLights(false);
+                //设置不震动
                 channel.enableVibration(false);
+                channel.setVibrationPattern(new long[]{0});
                 mNotificationManager.createNotificationChannel(channel);
             }
             NotificationCompat.Builder builder = new NotificationCompat.Builder(AudioHelper.getContext(), CHANNEL_ID)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setCustomContentView(mRemoteViews)
+                    //大布局
+                    .setCustomBigContentView(mRemoteViews)
+                    //小布局
                     .setContent(mSmallRemoteViews);
             mNotification = builder.build();
             showLoadStatus(mAudioBean);
@@ -195,7 +225,7 @@ public class NotificationHelper {
     /**
      * 更新Wie暂停状态
      */
-    public void showPasueStatus() {
+    public void showPauseStatus() {
         if (mRemoteViews != null) {
             mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_play_white);
             mSmallRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_play_white);

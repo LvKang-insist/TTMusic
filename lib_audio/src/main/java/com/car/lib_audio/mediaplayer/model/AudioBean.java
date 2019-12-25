@@ -1,5 +1,7 @@
 package com.car.lib_audio.mediaplayer.model;
 
+import java.io.Serializable;
+
 /**
  * @author 345 QQ:1831712732
  * @name TTMusic
@@ -7,7 +9,7 @@ package com.car.lib_audio.mediaplayer.model;
  * @time 2019/12/17 22:50
  * @description
  */
-public class AudioBean {
+public class AudioBean implements Serializable {
 
     public String id;
     /**

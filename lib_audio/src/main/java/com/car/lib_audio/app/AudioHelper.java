@@ -3,6 +3,11 @@ package com.car.lib_audio.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.car.lib_audio.mediaplayer.core.MusicService;
+import com.car.lib_audio.mediaplayer.model.AudioBean;
+
+import java.util.ArrayList;
+
 /**
  * @author 345 QQ:1831712732
  * @name TTMusic
@@ -21,5 +26,14 @@ public class AudioHelper {
 
     public static Context getContext() {
         return mContext;
+    }
+
+    /**
+     * 开启 Service
+     *
+     * @param audios
+     */
+    public static void startMusicService(ArrayList<AudioBean> audios) {
+        MusicService.startMusicService(audios);
     }
 }
