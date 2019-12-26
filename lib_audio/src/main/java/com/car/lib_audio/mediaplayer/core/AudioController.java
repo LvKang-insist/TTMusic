@@ -1,5 +1,8 @@
 package com.car.lib_audio.mediaplayer.core;
 
+import android.widget.Toast;
+
+import com.car.lib_audio.app.AudioHelper;
 import com.car.lib_audio.mediaplayer.event.AudioPlayModeEvent;
 import com.car.lib_audio.mediaplayer.model.AudioBean;
 
@@ -174,6 +177,13 @@ public class AudioController {
     }
 
     /**
+     * 准备播放
+     */
+    public void prepare() {
+        mAudioPlayer.prepare(getNowPlaying());
+    }
+
+    /**
      * 开始播放
      */
     public void play() {
@@ -223,8 +233,10 @@ public class AudioController {
     public void playOrPause() {
         if (isStartState()) {
             pause();
-        } else {
+        } else if (isPauseState()) {
             resume();
+        } else {
+            play();
         }
     }
 

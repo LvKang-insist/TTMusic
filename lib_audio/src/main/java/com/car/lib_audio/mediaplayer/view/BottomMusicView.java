@@ -1,6 +1,7 @@
 package com.car.lib_audio.mediaplayer.view;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -15,8 +16,10 @@ import android.widget.Toast;
 
 import com.car.lib_audio.R;
 import com.car.lib_audio.mediaplayer.core.AudioController;
+import com.car.lib_audio.mediaplayer.core.MusicPlayerActivity;
 import com.car.lib_audio.mediaplayer.event.AudioLoadEvent;
 import com.car.lib_audio.mediaplayer.event.AudioPauseEvent;
+import com.car.lib_audio.mediaplayer.event.AudioPrepareEvent;
 import com.car.lib_audio.mediaplayer.event.AudioStartEvent;
 import com.car.lib_audio.mediaplayer.model.AudioBean;
 import com.car.lib_image_loader.app.ImageLoaderManager;
@@ -70,7 +73,7 @@ public class BottomMusicView extends LinearLayout {
         rootView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                MusicPlayerActivity.start((Activity) mContext);
             }
         });
         mLeftView = rootView.findViewById(R.id.album_view);
@@ -105,6 +108,14 @@ public class BottomMusicView extends LinearLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioPrepareEvent(AudioPrepareEvent event) {
+        mAudioBean = event.audioBean;
+        ImageLoaderManager.getInstance().displayImageForCircle(mLeftView, mAudioBean.albumPic);
+        mTitleView.setText(mAudioBean.name);
+        mAlbumView.setText(mAudioBean.album);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAudioLoadEvent(AudioLoadEvent event) {
         //监听加载事件
         mAudioBean = event.mAudioBean;
@@ -122,6 +133,8 @@ public class BottomMusicView extends LinearLayout {
     public void onAudioPauseEvent(AudioPauseEvent event) {
         showPauseView();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
 
     private void showLoadingView() {
         //目前loading状态的UI处理与pause逻辑一样，分开为了以后好扩展

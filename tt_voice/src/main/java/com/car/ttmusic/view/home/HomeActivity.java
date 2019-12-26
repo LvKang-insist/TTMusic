@@ -180,4 +180,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 UserManager.getInstance().getUser().data.photoUrl);
     }
 
+
+
 }

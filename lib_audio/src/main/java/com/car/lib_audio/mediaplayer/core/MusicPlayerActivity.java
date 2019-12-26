@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,10 +13,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.car.lib_audio.R;
+import com.car.lib_audio.mediaplayer.event.AudioPauseEvent;
+import com.car.lib_audio.mediaplayer.event.AudioPrepareEvent;
 import com.car.lib_audio.mediaplayer.model.AudioBean;
+import com.car.lib_commin_ui.base.BaseActivity;
 import com.car.lib_image_loader.app.ImageLoaderManager;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author 345 QQ:1831712732
@@ -24,7 +30,7 @@ import org.greenrobot.eventbus.EventBus;
  * @time 2019/12/25 23:18
  * @description
  */
-public class MusicPlayerActivity extends AppCompatActivity {
+public class MusicPlayerActivity extends BaseActivity {
 
     private AudioBean mAudioBean;
     private PlayMode mPlayMode;
@@ -43,7 +49,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         setContentView(R.layout.activity_music_service_layout);
@@ -59,7 +65,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void initView() {
         mBgView = findViewById(R.id.root_layout);
         //给背景添加模糊效果
-        ImageLoaderManager.getInstance().displayImageForViewGroup(mBgView, mAudioBean.album);
+        ImageLoaderManager.getInstance().displayImageForViewGroup(mBgView, mAudioBean.albumPic);
+        Log.e("---------", "initView: " + mAudioBean.albumPic);
         findViewById(R.id.back_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +122,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //上一首
+                AudioController.getInstance().previous();
             }
         });
 
@@ -123,6 +131,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //暂停
+                AudioController.getInstance().playOrPause();
             }
         });
 
@@ -130,9 +139,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
         mNextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //暂停
+                AudioController.getInstance().next();
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioPrepareEvent(AudioPrepareEvent event) {
+        mAudioBean = event.audioBean;
+        ImageLoaderManager.getInstance().displayImageForViewGroup(mBgView, mAudioBean.albumPic);
+        mInfoView.setText(mAudioBean.albumInfo);
+        mAuthorView.setText(mAudioBean.author);
     }
 
     private void changeFavouriteStatus(boolean b) {
@@ -152,6 +169,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    /**
+     * 暂停事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioPauseEvent(AudioPauseEvent event) {
     }
 
 

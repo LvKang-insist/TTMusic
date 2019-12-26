@@ -68,20 +68,19 @@ public class MusicService extends Service implements NotificationHelper.Notifica
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(AudioHelper.getContext(), "启动服务", Toast.LENGTH_SHORT).show();
         mAudioBeans = (ArrayList<AudioBean>) intent.getSerializableExtra(DATA_AUDIOS);
         if (ACTION_START.equals(intent.getAction())) {
-            //开始播放
-            playMusic();
+            //准备播放
+            prepareMusic();
             //初始化前台Notification
             NotificationHelper.getInstance().init(this);
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void playMusic() {
-        AudioController.getInstance().setQueue(mAudioBeans);
-        AudioController.getInstance().play();
+    private void prepareMusic() {
+        AudioController.getInstance().setQueue(mAudioBeans, 1);
+        AudioController.getInstance().prepare();
     }
 
     /**

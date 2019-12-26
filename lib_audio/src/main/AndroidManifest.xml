@@ -11,6 +11,8 @@
 
     <application android:label="@string/app_name">
 
+        <activity android:name=".mediaplayer.core.MusicPlayerActivity"/>
+
         <service
             android:name=".mediaplayer.core.MusicService"
             android:enabled="true"

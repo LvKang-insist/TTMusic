@@ -101,34 +101,32 @@ public class ImageLoaderManager {
      */
     public void displayImageForViewGroup(final ViewGroup group, String ulr) {
         Glide.with(group.getContext())
+                .asBitmap()
                 .load(ulr)
                 .apply(initCommonRequestOption())
-                .into(new CustomTarget<Drawable>() {
+                .into(new SimpleTarget<Bitmap>() {
+                    @SuppressLint("CheckResult")
                     @Override
-                    public void onResourceReady(@NonNull final Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        final Bitmap res = resource;
                         Observable.just(resource)
-                                .map(new Function<Drawable, Drawable>() {
+                                .map(new Function<Bitmap, Drawable>() {
                                     @Override
-                                    public Drawable apply(Drawable drawable) throws Exception {
-                                        //将 bitmap 进行模糊处理 后转换为 Drawable
-                                        return new BitmapDrawable(Utils.doBlur(((BitmapDrawable) drawable).getBitmap(),
-                                                100,
-                                                true));
+                                    public Drawable apply(Bitmap bitmap) {
+                                        Drawable drawable = new BitmapDrawable(
+                                                Utils.doBlur(res, 100, true)
+                                        );
+                                        return drawable;
                                     }
                                 })
-                                .observeOn(Schedulers.io())
-                                .subscribeOn(AndroidSchedulers.mainThread())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Consumer<Drawable>() {
                                     @Override
                                     public void accept(Drawable drawable) throws Exception {
                                         group.setBackground(drawable);
                                     }
-                                }).dispose();
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
+                                });
                     }
                 });
     }

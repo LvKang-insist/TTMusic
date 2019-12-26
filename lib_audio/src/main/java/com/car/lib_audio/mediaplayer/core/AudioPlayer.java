@@ -15,6 +15,7 @@ import com.car.lib_audio.mediaplayer.event.AudioCompleteEvent;
 import com.car.lib_audio.mediaplayer.event.AudioErrorEvent;
 import com.car.lib_audio.mediaplayer.event.AudioLoadEvent;
 import com.car.lib_audio.mediaplayer.event.AudioPauseEvent;
+import com.car.lib_audio.mediaplayer.event.AudioPrepareEvent;
 import com.car.lib_audio.mediaplayer.event.AudioReleaseEvent;
 import com.car.lib_audio.mediaplayer.event.AudioStartEvent;
 import com.car.lib_audio.mediaplayer.model.AudioBean;
@@ -85,6 +86,11 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
                 .getApplicationContext().getSystemService(Context.WIFI_SERVICE))
                 .createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
         mAudioFocusManager = new AudioFocusManager(AudioHelper.getContext(), this);
+    }
+
+
+    public void prepare(AudioBean audioBean) {
+        EventBus.getDefault().post(new AudioPrepareEvent(audioBean));
     }
 
     /**
