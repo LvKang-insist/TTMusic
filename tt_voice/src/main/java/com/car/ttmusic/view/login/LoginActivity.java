@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.car.lib_commin_ui.base.BaseActivity;
 import com.car.lib_network.listener.DisposeDataListener;
+import com.car.lib_pullalive.AliveJobService;
 import com.car.ttmusic.R;
 import com.car.ttmusic.api.RequestCenter;
 import com.car.ttmusic.login.LoginEvent;
@@ -38,6 +39,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_layout);
 
+        pullAliveService();
+
         findViewById(R.id.login_view).setOnClickListener(v -> {
             RequestCenter.login(new DisposeDataListener() {
                 @Override
@@ -55,5 +58,9 @@ public class LoginActivity extends BaseActivity {
                 }
             });
         });
+    }
+
+    private void pullAliveService() {
+        AliveJobService.start(this);
     }
 }
